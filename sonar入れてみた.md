@@ -26,13 +26,12 @@ sonarのhpから引用します。
 
 ![id](http://docs.codehaus.org/download/attachments/229736899/technical-architecture.png?version=3&modificationDate=1338554386797)
 
-
 # sonarインストール方法
 [ここ](http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+Sonar+Runner)に詳しく書いてあります。
 ざっくり言うとダウンロードして、スタートスクリプト実行。これだけ。
 
 ## 必要なもの
-java1.5以上
+[ここ](http://docs.codehaus.org/display/SONAR/Requirements)参照。dbの文字コードはutr-8にしてください。
 
 # 実行方法
 僕はjenkins + sonarだったのでjenkins上でsonarプラグインを設定。インストールしたsonarへのURLを指定しました。ローカルで動かす場合は[ここ](http://docs.codehaus.org/display/SONAR/Analyzing+Source+Code)に詳しく書いてあります。
@@ -101,11 +100,11 @@ mavenとantでももちろん動かせますが、[sonnar runner](http://docs.co
 + プロジェクトを右クリック => configure => Associate with Sonar => 該当プロジェクトを選択
 + プロジェクトを右クリック => Sonar => mode => Localにすると、**Run Local Analysis**が有効になります。
 
-# 手動じゃなくて自動でできないの？
-sonar単体は自動で動きません。jenkisと組み合わせることで自動化を図ることができます。非常に便利なので、jenkinsと組み合わせをお勧めします。
+# Continuous Integration
+以下ののCIServerと組み合わせることで一段とsonarの力を発揮できます。
 
++ jenkis
++ Bamboo(sonarのプラグイン) 
++ Apache Continuum 1.2
 
-
-
-
-
+jenkinsが一般的だと思います。
