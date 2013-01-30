@@ -29,13 +29,12 @@ gerritのイベントをトリガーにしてビルドすることができま�
 * Comment added レビューコメントが追加された時にトリガー（評価カテゴリーと評価値でフィルタリング）
 * Reference updated ブランチやタグが更新された時にトリガー
 
-Patch set createdを選んでおけばよいでしょう。
-次に動的トリガーを設定します。
+レビュー用のjenkinsはPatch set createdを選んでおけばよいでしょう。
+リリース物のjenkinsは Change mergedですね。
 
-プロジェクトとブランチのパターンを設定します。
+次に動的トリガーを設定します。 プロジェクトとブランチのパターンを設定します。
 パターンはplainにして、gerritに登録したプロジェクト名とブランチ名を設定するのが無難でしょう。
 
 # その他の設定
 RefSpecに$GERRIT_REFSPEC。'Branches to build'に$GERRIT_BRANCHを設定してください。
-
 後はgerritに変更をpushすれば動くはずです。
