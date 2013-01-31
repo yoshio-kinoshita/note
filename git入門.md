@@ -3,7 +3,7 @@ gitを始めて使うとき、何をしたら良いのか分からんと思う�
 
 # gitって
 分散型版管理システム(dvcs)です。版管理する対象は基本的に成果物すべて。
-とりあえず、svnより複雑ですが、いろいろできます。便利です。
+とりあえず、svnと考え方が違います。最初は戸惑うと思いますが、いろいろできます。便利です。
 
 # gitインストール
 debianをサンプルにします。
@@ -11,60 +11,106 @@ debianをサンプルにします。
 
 windowsは[msysgit](http://code.google.com/p/msysgit/)をインストールすれば使えるはずです。
 
+インストール完了後
+
+    git --version
+    
+でgitのバージョンが確認できます。
+
 # ユーザ名とメールアドレスを設定
 ユーザ名とメールアドレスを設定しましょう。この名前がコミット時に使われます。
     git config --global user.name "name"
     git config --global user.email "email"
 
+ほかにもエディタやdiffツールを設定することができます。
+    
+    git config --global core.editor vim
+    git config --global merge.tool vimdiff
+
+俺はエディタはvim。diffツールはvimdiffを使います。
+設定内容は
+
+    git config --list
+    
+で確認できます。
+後、statusやlogに色づけするため
+
+   git config --global color.ui true
+
+で、とりあえずgitお任せですが、色づけできて見やすくなります。
 
 # gitの構成
 gitには以下の３つがあります。
+
 * リポジトリ
 * インデックス(ステージング)
 * ワーキングツリー
 
-## リポジトリとインデックスとワーキングツリー
-リポジトリとワーキングツリーはまぁ、大丈夫だと思いますがインデックスってのがGit独自ですね。
-インデックスというのはワーキングツリーとリポジトリの間にある層です。これがあることによって、コミット内容をきれいに練り上げることができます。
-
 ![ALT](http://git-scm.com/figures/18333fig0106-tn.png)
 
+# ファイルのライフサイクル
+ファイルのライフサイクルです。
+
+![ALT](http://git-scm.com/figures/18333fig0201-tn.png)
+
 # よく使うコマンド
-コマンドはいっぱいありますが、よく使うコマンドをピックアップ
+コマンドはいっぱいありますが、よく使うコマンドをピックアップします。
 
 * git init(リポジトリ初期化)
 * git add(ステージングに変更を登録)
 * git commit(リポジトリにコミット)
+* git clone(既存リポジトリのクローン)
+* git status(変更ファイル一覧)
+* git rm(追跡対象ファイルの削除)
+* git mv(追跡対象ファイルのリネーム)
 * git push(リモートリポジトリに送信)
 * git fetch(リモートリポジトリから変更を取得)
 * git merge(ブランチをマージ)
-* git status(変更ファイル一覧)
+* git pull(リモートリポジトリから変更を取得して現在のブランチにマージ.fetch + merge)
 * git diff(変更内容確認)
 * git log(コミットログ)
 * git branch(ブランチ作成)
-* git checkout(ブランチ取得)
+* git checkout(リポジトリからソース取得)
 * git reset(ステージングに登録した変更を取消)
-* git revert
-* git rebase
+* git revert(コミットを取り消す)
+* git rebase()
+* git remote(リモートリポジトリの表示)
 
 # ヘルプを見る。
-ヘルプに大体のことは書いてあります。
+
+一気に覚えられないのでヘルプ見ながら徐々に覚えるのが吉。
+
     git help <verb>
     git <verb> --help
 
+***
+
 # リポジトリの初期化
 リポジトリにしたいディレクトリを作成し以下のコマンドを実行
-    git init
+
+    $ mkdir testgit
+    $ cd testgit
+    $ git init
+
+これでリポジトリができます。
 
 # インデックスに登録
 変更した内容をインデックスに登録します。
-    git add <filepattern>
+
+    $ echo test > test.txt
+    $ git add test.txt
     
 間違えて登録した場合は以下のコマンドで取り消せます。
-    git reset <filepattern>
- 
+
+    git reset test.txt
+
+何もコミットしていない場合は以下のコマンドで取り消します。
+
+    git rm --cached test.txt
+
 # コミット
 コミットは以下の内容でできます。
+
     git commit -m "コメント"
 
 Gitのルールでコミットコメントは細かく書くということになっています。書き方のサンプルをあげます。
@@ -76,37 +122,81 @@ Gitのルールでコミットコメントは細かく書くということに�
 コメントをちゃんと書くと１コミット２分ぐらいはかかります。またコミットの単位は論理的に意味のある単位にしたほうがよいらしいです。
 
 また、以下のコマンドで対話形式でコミットメッセージを書くことができます。
-    git commit -i 
 
-# 既存リポジトリのクローン
-    git clone ssh://ユーザ名@172.21.52.47/リポジトリ名
+    git commit -i 
+    
+## コミットを変更する。
+git addし忘れたファイルがあった場合やコミットメッセージを変更する場合に使います。
+
+    git commit --amend
+    
+たとえば、コミット漏れの場合です。
+    
+    git commit -m 'first commit'
+    git add forget.txt
+    git commit --amend
+    
+これで最初のコミットにforget.txtも含まれます。
+
+# リモートリポジトリのクローン
+
+    git clone git://github.com/schacon/ticgit.git
+
+# リモートリポジトリの表示
+
+   git remote -v
+
 
 # リモートリポジトリにpush
-    git push origin HEAD:refs/for/master
-    
 
-以下のブランチにコミットするとレビューなしで取り込まれます。
-使っちゃだめです。
-    git push origin HEAD:refs/heads/master
+    git push 
 	
 # 変更履歴を見る
+
     git log
 
 # 現状態
+
     git status
+ 
+## 変更を取り消す
+間違ってエディットした場合の取消方法はgit status内に記述されています。
+    
+    git checkout -- <filepath>
     
 # 変更点を確認する
 インデックスにとワークツリーの比較
+
     git diff
+    
 最新コミットとワークツリーの比較    
+
     git diff HEAD
     
 # コミットを取り消す
 コミットを取り消しますが、取り消したログは残ります。
+
     git log
     git revert commit番号
+    
+# リモートからフェッチ
+リモートリポジトリからデータを取得します。
+    
+    git fetch <remote-name>
+
+ただし、これはローカルリポジトリにデータを取得するだけでワークツリーには入りません。
+ワークツリーに入れる場合はmergeする必要があります。
+
+    git merge <branch>
+    
+これだと面倒なので、fetch と マージを一回でやるコマンドpullです。
+ 
+    git pull <remote-name>
+
+これでfetch & mergeしてくれます。
 
 # ファイルの無視
+
 .gitigonoreを記述する。
 
 # rebase
