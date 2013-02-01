@@ -23,7 +23,7 @@ windowsは[msysgit](http://code.google.com/p/msysgit/)をインストールす�
     git config --global user.email "email"
 
 ほかにもエディタやdiffツールを設定することができます。
-    
+
     git config --global core.editor vim
     git config --global merge.tool vimdiff
 
@@ -73,8 +73,8 @@ gitには以下の３つがあります。
 * git checkout(リポジトリからソース取得)
 * git reset(ステージングに登録した変更を取消)
 * git revert(コミットを取り消す)
-* git rebase()
 * git remote(リモートリポジトリの表示)
+* git rebase(他のブランチにコミットされた変更を再現する。)
 
 # ヘルプを見る。
 
@@ -82,8 +82,6 @@ gitには以下の３つがあります。
 
     git help <verb>
     git <verb> --help
-
-***
 
 # リポジトリの初期化
 リポジトリにしたいディレクトリを作成し以下のコマンドを実行
@@ -131,11 +129,11 @@ git addし忘れたファイルがあった場合やコミットメッセージ�
     git commit --amend
     
 たとえば、コミット漏れの場合です。
-    
+
     git commit -m 'first commit'
     git add forget.txt
     git commit --amend
-    
+
 これで最初のコミットにforget.txtも含まれます。
 
 # リモートリポジトリのクローン
@@ -161,15 +159,15 @@ git addし忘れたファイルがあった場合やコミットメッセージ�
  
 ## 変更を取り消す
 間違ってエディットした場合の取消方法はgit status内に記述されています。
-    
+
     git checkout -- <filepath>
-    
+
 # 変更点を確認する
 インデックスにとワークツリーの比較
 
     git diff
     
-最新コミットとワークツリーの比較    
+最新コミットとワークツリーの比較
 
     git diff HEAD
     
@@ -181,7 +179,7 @@ git addし忘れたファイルがあった場合やコミットメッセージ�
     
 # リモートからフェッチ
 リモートリポジトリからデータを取得します。
-    
+
     git fetch <remote-name>
 
 ただし、これはローカルリポジトリにデータを取得するだけでワークツリーには入りません。
@@ -200,28 +198,53 @@ git addし忘れたファイルがあった場合やコミットメッセージ�
 .gitigonoreを記述する。
 
 # rebase
-[ここ](http://www.backlog.jp/git-guide/stepup/stepup1_4.html)のrebaseに詳しく書いてある。
+mergeとrebaseの違いにつまづくと思います。
+rebaseについては[ここ](http://git-scm.com/book/ja/Git-%E3%81%AE%E3%83%96%E3%83%A9%E3%83%B3%E3%83%81%E6%A9%9F%E8%83%BD-%E3%83%AA%E3%83%99%E3%83%BC%E3%82%B9)を読んでください。
 
+ちょっと分かりづらいのでgit logで見てみましょう。
+
+## mergeした場合
+マージした場合、 git log コマンドには、以下のように出力されます。
+
+    Merge branch 'master' into branch1
+
+## rebaseした場合
+リベースした場合、git logコマンドには以下のように出力されます。
+
+    rebase対象をコミットします。
+
+## merge vs rebase
+git logを見比べると、何が違うか。mergeした場合はマージしたログが出ますが、rebaseの場合は出ません。
+rebaseのほうがブランチ構成がシンプルになります。
+
+## first-foward
+ファーストフォワードというキーワードが出てくるのですが、詳しい解説がないので追記します。
+ファーストフォワードというのはコミット1と2があるとき、コミット2にはコミット1がすべて含まれていることを言います。
 
 # コミットをなかったことにする。
 ログを含めすべてなかったことにします。
+
     git reset HEAD^
 
 # コミットをやり直す
+
     git commit --amend
 
 # ワークツリーの変更を取り消す
+
     git checkout <paths>
     
 # bareリポジトリ
 ワーキングツリーがないリポジトリ。中央リポジトリとして使う。
+
     git init --bare
-    
+
 # 用語
 ## patch(パッチ)
 git diffの出力結果の形式。
 
 ### パッチサンプル
+
     yoshiokinoshita@yoshiokinoshita-ubuntu:~/gitusers$ git diff
     diff --git a/index.html b/index.html
     index 1d70c8a..73bf963 100644
@@ -236,11 +259,12 @@ git diffの出力結果の形式。
     +<p>test2</p>
      </body>
      </html>
-    
+
 ## hunk(ハンク)
 git diffの出力結果のうち、@@マーカーの後のインデントされたファイルの内容
 
 ### ハンクサンプル
+
      </head>
      <body>
      <h1>hogehoge</h1>
@@ -258,26 +282,3 @@ git diffの出力結果のうち、@@マーカーの後のインデントされ�
 
 ## origin/master
 (remote)/(branch)で、リモートリポジトリのmasterブランチを指す。
-
-## Fast-forward と Non Fast-forward
-[ここ](http://www.backlog.jp/git-guide/stepup/stepup1_4.html)に丁寧な解説あり。
-
-# cloneサンプル
-    git clone ssh://ykinos@172.21.52.47:29418/testproject
-# pushサンプル
-    git push origin HEAD:refs/for/master
-
-# gerritプロジェクト作成
-    ssh -p 29418 ykinos@172.21.52.47 gerrit create-project --empty-commit --name testproject
-
-# gerritでno common ancestry
-
-# gerrit接続チェック
-    ssh -p 29418 172.16.5.95
-
-# 鍵生成
-
-# git ssh で ssh Bad file number
-
-
-
