@@ -79,3 +79,65 @@ gerritの場合pushする先は
 
 間違って/ref/heads/masterにpushしたらレビュー対象外となります。
  
+# jenkinsと連携する。
+おそらくgerrit単体で使うよりjenkinsと連携させるパターンのほうが多いと思うので、連携についても解説します。
+
+## jenkinsでgerrit toggleを設定する。
+jenkinsのプラグインインで[Gerrit Trigger](https://wiki.jenkins-ci.org/display/JENKINS/Gerrit+Trigger)を設定します。
+
+Gerritサーバー情報を入力し、テスト接続で接続を確認します。
+
+* ホスト名：localhost
+* フ ロントエンドURL:http://localhost:8080/
+* SSHポート:29418
+* ユーザ名：gerritを使うユーザ名
+* sshキーファイル：先ほど生成したid_rsa
+* sshキーファイルパスワード：sshキーファイルパスワード
+
+jenkinsをリスタートし、gerrit toggle => control => start, stopが動くことを確認。
+
+
+# gerrit構成
+![alt](gerrit.png)
+
+# ワークフロー
+![alt](workflow-0.png)
+
+# ~/.ssh/config
+    Host tr
+      Hostname git.example.com
+      Port 29418
+      User john.doe
+
+# .git/config
+    [remote "for-a-exp"]
+      url = tr:kernel/common
+      receivepack = git receive-pack --reviewer=a@a.com --cc=b@o.com
+      push = HEAD:refs/for/experimental
+
+# プロジェクト作成
+管理画面から作成する。
+
+# 権限設定
+gerritが裏でこそこそ動き回るときのグループはNon-Interactive Usersのため、Non-Interactive Usersに権限設定します。
+## READ権限
+READ権限をrefs/*でNon-Interactive Usersに付与
+
+## Label Code-Review権限
+Label Code-Review権限をrefs/heads/*でNon-Interactive Usersに付与
+## Label Code-Review権限
+Label Code-Review権限をrefs/heads/*でNon-Interactive Usersに付与
+
+## Label Verified
+Label Verified権限をrefs/heads/*でNon-Interactive Usersに付与
+
+後はメンバーの権限設定でご自由にレビュー権限などを付与してください。
+
+# jenkisでgerrit toggleｐプラグイン設定
+gerrit toggleプラグインを使うと、pushされた時点でgerritからjenkinsに連携され、指定された処理が動きます。
+今回は warとsonarを実行しています。sonarチェックが完了すると、verifiedに１がセットされます。失敗した場合は -1です。
+レビュー対象はverifiedが１のリソースです。
+
+## ちょっとハマったこと。
+$GERRIT_REFSPECをブランチに設定しています。この値はgerritから連携されるため、プロジェクトを手動で動かそうとしても動きません。
+
