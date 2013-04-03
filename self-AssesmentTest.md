@@ -15,9 +15,9 @@
     I get anxious and tight as I head into crux sequences.
 # Q6 前腕より先に上腕が先にパンプする。
     My biceps(upper arms)pump out before my forearms.
-# Q7 
+# Q7 ムーブを失敗するとイラつく。
     I blow sequences I have wired and know by heart.
-# Q8 
+# Q8 核心入ると行き詰まり、
     I stall at the start of crux sequences. I end up having to hang on the rope and rest before I can give it a good, solid try.
 # Q9 3日以上連続で登る。
     I clumb three or four days in a row.
@@ -26,7 +26,7 @@
 # Q11 どっかぶりだとガバを使ってもパンプする。
     I pump out on overhanging climbs no matter how big the holds.
 # Q12 登っているとき呼吸を止めている。
-    I get out of breath when i climb.
+    I get out of breath when I climb.
 # Q13 登る前に落ちたときの言い訳を考えている。
     I make excuses for why I might fail on a route before I even begin to climb.
 # Q14 ホールドを見失う。
