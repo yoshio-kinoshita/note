@@ -59,7 +59,12 @@
     I experience elbow pain when I climb on a regular basis.
 # Q28 リードでパンプ後の１手が出せない。
     when I lead climbing a safe route, I have difficulty pushing myself to the complete limit.
-# Q29
+# Q29 レストが苦手
     I have difficulty finding midroute rest positions and shakeouts.
 # Q30 限界ルートにトライするとき、２便目・３便目より、１便目のほうが調子が良い。
     My first attempt on a hard route is usually better than my second or third attempts of the day.
+
+
+mental(1, 4, 7, 10 ,13, 16, 19, 22, 25,28)
+technique and tactics(2, 5, 8, 11, 14, 17,20,23,26,29)
+physical(3,6,9,12,15,18,21,24,27,30)
